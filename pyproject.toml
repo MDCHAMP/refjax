@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "refjax"
+dependencies = ["numpy", "jax", "jaxlib"]
+requires-python = ">=3.9"
+authors = [
+    { name = "Max Champneys", email = "max.champneys@sheffield.ac.uk" },
+    { name = "Stephanie Burg" },
+]
+maintainers = [
+    { name = "Max Champneys", email = "max.champneys@sheffield.ac.uk" },
+]
+description = "Lightweight `jit` and `grad` compatible reflectometry in jax."
+# readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["Reflectometry", "Neutron reflectometry", "jax", "autograd"]
+classifiers = [
+    "Programming Language :: Python",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 4 - Beta",
+]
+dynamic = ["version", "readme"]
+
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+version = {attr = "refjax.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
