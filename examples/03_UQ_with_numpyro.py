@@ -20,6 +20,8 @@ data = pd.read_csv(".example_data.csv")
 
 plt.loglog(data.Q, data.R)
 plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha=0.2)
+plt.xlabel("$Q$ ($A^{-1}$)")
+plt.ylabel("Reflectivity")
 plt.legend(["Data", "$\pm 3 \sigma$"])
 plt.show()
 
@@ -73,14 +75,16 @@ def pgm(Q, FWHM, R, sig_R):
         "bkg": 2e-7,
     }
     # Make prediction using our kernel
-    R_hat = numpyro.deterministic('R', kernel(params, Q, FWHM))
-    
+    R_hat = numpyro.deterministic("R", kernel(params, Q, FWHM))
+
     # Finally our observation likelihood - here we will assume a Gaussian (but there are several problems with this choice - for example, R cannot be negative!)
     numpyro.sample("obs", dist.Normal(R_hat, sig_R), obs=R)
+
 
 # %%
 # Running the inference
 
+# Set some parameters for the MCMC - see numpyro docs for details
 mcmc_opts = {
     "num_warmup": 500,
     "num_samples": 500,
@@ -88,20 +92,40 @@ mcmc_opts = {
     "progress_bar": True,
 }
 
+# Run the NUTS MCMC
 mcmc = MCMC(NUTS(pgm), **mcmc_opts)
-mcmc.run(jax.random.PRNGKey(4583403), 
-         jnp.array(data.Q), 
-         jnp.array(data.FWHM), 
-         jnp.array(data.R), 
-         jnp.array(data.sig_R))
+mcmc.run(
+    jax.random.PRNGKey(4583403),
+    jnp.array(data.Q),
+    jnp.array(data.FWHM),
+    jnp.array(data.R),
+    jnp.array(data.sig_R),
+)
 
+# Print summary of the inference and draw some samples from the chains
 mcmc.print_summary()
 samps = mcmc.get_samples()
 
 # %%
 
+# Finally plot the mean and +/- 3 std results.
+plt.figure()
 plt.loglog(data.Q, data.R)
 plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha=0.2)
-plt.plot(data.Q, samps['R'].mean(0))
-plt.legend(["Data", "$\pm 3 \sigma$", "Mean prediction"])
+plt.plot(data.Q, samps["R"].mean(0))
+plt.fill_between(
+    data.Q,
+    samps["R"].mean(0) - 3 * samps["R"].std(0),
+    samps["R"].mean(0) + 3 * samps["R"].std(0),
+    alpha=0.2,
+    color="C3",
+)
+plt.legend(["Data", "$\pm 3 \sigma$", "Mean prediction", "$\pm 3 \sigma$"])
+plt.show()
+
+# We now have access to distributional estimates of each of the parameters in our inference
+plt.figure()
+plt.hist(samps["thick"], density=1, bins=20)
+plt.xlabel("Thickness")
+plt.ylabel("Density")
 plt.show()
