@@ -1,7 +1,6 @@
 # %%
 import jax.numpy as jnp
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 import refjax
