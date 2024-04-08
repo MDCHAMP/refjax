@@ -9,13 +9,14 @@ herm_root, herm_weight = jnp.array(herm_root), jnp.array(herm_weight)
 def no_smear(params, Q, FWHM, model, **kwargs):
     return model(params, Q)
 
-def constant_gaussian(params, Q, FWHM, model, **kwargs):
+def constant_gaussian(params, Q, cont_smear, model, **kwargs):
     '''
+    FWHM = const_smear% * Q
     Gaussian kernel smearing.
     There are a few options here can solve as a convolution or just do gauss-hermite? 
     For now treat as pointwise.
     '''
-    return pointwise_gaussian(params, Q, FWHM, model, **kwargs)
+    return pointwise_gaussian(params, Q, Q*cont_smear/100, model, **kwargs)
 
 def pointwise_gaussian(params, Q, FWHMs, model, **kwargs):
     '''
