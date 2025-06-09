@@ -129,3 +129,5 @@ plt.hist(samps["thick"], density=1, bins=20)
 plt.xlabel("Thickness")
 plt.ylabel("Density")
 plt.show()
+
+
