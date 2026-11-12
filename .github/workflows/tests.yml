@@ -9,12 +9,23 @@ permissions:
 
 jobs:
   test:
+    name: ${{ matrix.resolution }} (Python ${{ matrix.python }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # latest releases of everything
+          - resolution: highest
+            python: "3.12"
+          # the lower bounds in pyproject.toml (jax, jaxlib, numpy and the test extra)
+          - resolution: lowest-direct
+            python: "3.9"
     steps:
       - uses: actions/checkout@v4
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
       - name: Run tests
-        run: uv run --extra test pytest -v
+        run: uv run --isolated --resolution ${{ matrix.resolution }} --extra test pytest -v
