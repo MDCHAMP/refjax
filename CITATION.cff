@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "refjax: lightweight jit and grad compatible reflectometry in jax"
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/MDCHAMP/refjax"
+url: "https://github.com/MDCHAMP/refjax"
+authors:
+  - family-names: Champneys
+    given-names: Max
+  - family-names: Burg
+    given-names: Stephanie
+keywords:
+  - reflectometry
+  - neutron reflectometry
+  - ellipsometry
+  - jax
