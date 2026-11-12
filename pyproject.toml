@@ -4,11 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "refjax"
-dependencies = ["numpy>=1.22", "jax>=0.4.18", "jaxlib>=0.4.18"]
-requires-python = ">=3.9"
+dependencies = ["numpy>=2.0", "jax>=0.4.26", "jaxlib>=0.4.26"]
+requires-python = ">=3.11"
 authors = [
     { name = "Max D. Champneys", email = "max.champneys@sheffield.ac.uk" },
-    { name = "Andrew J. Parnell" },
     { name = "Stephanie L. Burg" },
 ]
 maintainers = [
@@ -26,7 +25,7 @@ classifiers = [
 dynamic = ["version", "readme"]
 
 [project.optional-dependencies]
-test = ["pytest>=7.0", "pandas>=1.4", "refnx>=0.1.33"]
+test = ["pytest>=7.0", "pandas>=2.2.2", "refnx>=0.1.45"]
 
 [project.urls]
 Repository = "https://github.com/MDCHAMP/refjax"

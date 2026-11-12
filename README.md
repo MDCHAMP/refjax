@@ -24,7 +24,7 @@ pip install "refjax @ git+https://github.com/MDCHAMP/refjax@v0.1.0"
 uv add git+https://github.com/MDCHAMP/refjax --tag v0.1.0
 ```
 
-refjax needs Python >= 3.9, `jax` and `jaxlib` >= 0.4.18 and `numpy` >= 1.22. The test suite runs in CI at these minimum versions and at the latest releases.
+refjax needs Python >= 3.11, `jax` and `jaxlib` >= 0.4.26 and `numpy` >= 2.0. The test suite runs in CI at these minimum versions and at the latest releases.
 
 ### 64-bit precision is on by default
 
