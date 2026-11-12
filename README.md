@@ -8,19 +8,27 @@ Current version: 0.1.0.
 
 ## Installation
 
-refjax is installed from GitHub. To pin the 0.1.0 release by its tag:
+From PyPI:
 
 ```bash
-# pip
-pip install "refjax @ git+https://github.com/MDCHAMP/refjax@v0.1.0"
+pip install refjax
+# or
+uv add refjax
+```
 
-# uv
+Or from GitHub, pinned to the 0.1.0 release by its tag:
+
+```bash
+pip install "refjax @ git+https://github.com/MDCHAMP/refjax@v0.1.0"
+# or
 uv add git+https://github.com/MDCHAMP/refjax --tag v0.1.0
 ```
 
-Dependencies are `numpy`, `jax` and `jaxlib`.
+refjax needs Python >= 3.9, `jax` and `jaxlib` >= 0.4.18 and `numpy` >= 1.22. The test suite runs in CI at these minimum versions and at the latest releases.
 
-Note that `import refjax` enables jax's 64-bit mode (`jax_enable_x64`) for the whole process.
+### 64-bit precision is on by default
+
+`import refjax` switches on jax's 64-bit mode (`jax.config.update("jax_enable_x64", True)`), so refjax computes in float64 and complex128. This setting is global: it applies to all jax code in the same Python process, not only to refjax.
 
 ## Neutron reflectometry
 
@@ -122,6 +130,21 @@ uv run --extra test pytest
 
 ## Citing
 
-If you use refjax in published work, please cite the software. Citation metadata is in [`CITATION.cff`](CITATION.cff) (GitHub's "Cite this repository" button reads it). Please cite the version you used, e.g. 0.1.0.
+If you use refjax in published work, please cite:
+
+> Max D. Champneys, Andrew J. Parnell and Stephanie L. Burg, "Towards real-time surrogate-free Bayesian inversion for neutron reflectometry", *Communications Materials* (2026). [doi:10.1038/s43246-026-01341-4](https://doi.org/10.1038/s43246-026-01341-4)
+
+```bibtex
+@article{champneys2026refjax,
+  author  = {Champneys, Max D. and Parnell, Andrew J. and Burg, Stephanie L.},
+  title   = {Towards real-time surrogate-free {B}ayesian inversion for neutron reflectometry},
+  journal = {Communications Materials},
+  year    = {2026},
+  doi     = {10.1038/s43246-026-01341-4},
+  url     = {https://doi.org/10.1038/s43246-026-01341-4}
+}
+```
+
+Please also state the refjax version you used (e.g. 0.1.0). Citation metadata is in [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository" button reads it.
 
 Having trouble? Feature request? Raise an issue on the GitHub page.
