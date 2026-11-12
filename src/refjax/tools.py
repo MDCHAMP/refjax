@@ -2,8 +2,11 @@ import jax
 from refjax.smear import no_smear
 
 
-def kernel(model, smear=no_smear, smear_params={}, jit=True):
+def kernel(model, smear=no_smear, smear_params=None, jit=True):
     """Build a reflection kenrel from a reflection model and a smearing kernel"""
+    if smear_params is None:
+        smear_params = {}
+
     def kern(params, q, dq=None):
         return smear(params, q, dq, model, **smear_params)    
     if jit:
