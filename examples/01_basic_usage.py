@@ -12,7 +12,7 @@ from refjax.smear import pointwise_gaussian
 
 # In this example we will look at some (real) example reflectometry data from a sample of polymer film on a Si backing with a thin layer of native Si02 between the two of them.
 
-data = pd.read_csv(".example_data.csv")
+data = pd.read_csv(".example_NR_data.csv")
 print(data)
 
 # Loading in the example data as a pandas array we see that we have four columns:

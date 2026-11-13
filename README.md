@@ -83,7 +83,7 @@ kernel = refjax.kernel(refjax.model.abeles, refjax.smear.pointwise_gaussian)
 R = kernel(params, Q, FWHM)
 ```
 
-`examples/01_basic_usage.py` walks through this model against the example data in `examples/.example_data.csv`; the other scripts in `examples` show parameter identification with optax and numpyro.
+`examples/01_basic_usage.py` walks through this model against the example data in `examples/.example_NR_data.csv`; the other scripts in `examples` show parameter identification with optax and numpyro.
 
 ## Spectroscopic ellipsometry
 
@@ -116,7 +116,7 @@ params = {"nbar": nbar, "thick": jnp.array([17.0, 2.0]), "aoi_rads": np.radians(
 psi, delta = refjax.model.spec_ellips(params, lam)
 ```
 
-`test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation.
+`examples/06_spectroscopic_ellipsometry.py` models and fits a polystyrene film on Si against a measured spectrum in `examples/.example_ellips_data.csv` (which carries the substrate's indices). `test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation and against that spectrum.
 
 ### Changes in 0.1.0
 

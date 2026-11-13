@@ -13,7 +13,7 @@ import optax
 
 # In this example we will be using gradient descent to learn parameters in the slab model from the previous example
 
-data = pd.read_csv(".example_data.csv")
+data = pd.read_csv(".example_NR_data.csv")
 
 plt.loglog(data.Q, data.R)
 plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha=0.2)

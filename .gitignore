@@ -154,3 +154,5 @@ cython_debug/
 
 
 .scratch
+# uv lockfile: refjax is a library, so its users resolve their own versions (CI tests the lowest and the latest)
+uv.lock
