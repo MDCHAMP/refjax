@@ -47,6 +47,8 @@ def abeles(params, Q):
     return params["scale"] * (R * R.conj()).real + params["bkg"]
 
 
+# %% Spectroscopic ellipsometry
+
 # Parameter shapes
 # params = {
 #     "nbar": (n + 2, lam.shape) complex refractive index n + ik (k >= 0), ambient first
