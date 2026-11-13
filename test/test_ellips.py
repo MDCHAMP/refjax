@@ -76,7 +76,7 @@ def test_ellips_can_jit_and_grad():
 data = pd.read_csv(Path(__file__).parent.parent / "examples" / ".example_ellips_data.csv")
 film = {"A": 1.5592380152192518, "B": 0.009669302459697682, "thick_nm": 269.12932822155117}
 oxide_nm = 1.7976495299127038
-aoi_deg = 75.11362116  # the instrument's 75.1034 plus the fitted offset
+aoi_deg = 75.11362116  
 
 
 def test_spec_ellips_vs_data():
