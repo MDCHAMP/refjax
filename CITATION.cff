@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the article in preferred-citation, and the software version you used."
+type: software
+title: "refjax: lightweight jit and grad compatible reflectometry in jax"
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/MDCHAMP/refjax"
+url: "https://github.com/MDCHAMP/refjax"
+authors:
+  - family-names: Champneys
+    given-names: Max D.
+  - family-names: Burg
+    given-names: Stephanie L.
+keywords:
+  - reflectometry
+  - neutron reflectometry
+  - ellipsometry
+  - jax
+preferred-citation:
+  type: article
+  title: "Towards real-time surrogate-free Bayesian inversion for neutron reflectometry"
+  authors:
+    - family-names: Champneys
+      given-names: Max D.
+    - family-names: Parnell
+      given-names: Andrew J.
+    - family-names: Burg
+      given-names: Stephanie L.
+  journal: "Communications Materials"
+  year: 2026
+  doi: "10.1038/s43246-026-01341-4"
+  url: "https://doi.org/10.1038/s43246-026-01341-4"

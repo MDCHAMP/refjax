@@ -16,7 +16,7 @@ from numpyro.infer import MCMC, NUTS
 
 # Once again we will consider the slab model and our example data.
 
-data = pd.read_csv(".example_data.csv")
+data = pd.read_csv(".example_NR_data.csv")
 
 plt.loglog(data.Q, data.R)
 plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha=0.2)

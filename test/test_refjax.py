@@ -1,4 +1,4 @@
-import pytest
+from pathlib import Path
 
 import jax
 import jax.numpy as jnp
@@ -11,7 +11,7 @@ from refnx.reflect.reflect_model import reflectivity
 # %% Fixture some data
 
 #data
-data = pd.read_csv( r"refjax\examples\.example_data.csv")
+data = pd.read_csv(Path(__file__).parent.parent / "examples" / ".example_NR_data.csv")
 
 #Parameters
 struct = jnp.array(

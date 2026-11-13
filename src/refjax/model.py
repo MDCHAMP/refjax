@@ -47,33 +47,44 @@ def abeles(params, Q):
     return params["scale"] * (R * R.conj()).real + params["bkg"]
 
 
+# %% Spectroscopic ellipsometry
+
+# Parameter shapes
+# params = {
+#     "nbar": (n + 2, lam.shape) complex refractive index n + ik (k >= 0), ambient first
+#     "thick": (n,) layers, same length unit as lam
+#     "aoi_rads": () angle of incidence in the ambient
+# }
+# Returns psi, delta in degrees: tan(psi) exp(i delta) = rp / rs in Woollam's convention,
+# delta in [0, 360). Compare delta to data modulo 360.
+
+
 def spec_ellips(params, lam):
     nbar = params["nbar"]
-    thetas = jnp.arcsin(
-        nbar[0] * jnp.sin(params["aoi_rads"]) / params["nbar"]
-    )  # this is possibly problematic
-    cos = jnp.cos(thetas)
-    ncos22 = nbar[1:] * cos[1:]
-    ncos11 = nbar[:-1] * cos[:-1]
+    # n cos(theta) in each medium (Snell); principal sqrt gives Im >= 0, the decaying wave for n + ik
+    ncos = jnp.sqrt(nbar**2 - (nbar[0] * jnp.sin(params["aoi_rads"])) ** 2)
+    cos = ncos / nbar
+    ncos22 = ncos[1:]
+    ncos11 = ncos[:-1]
     ncos21 = nbar[1:] * cos[:-1]
     ncos12 = nbar[:-1] * cos[1:]
     rs = (ncos11 - ncos22) / (ncos11 + ncos22)
     ts = 2 * ncos11 / (ncos11 + ncos22)
     rp = (ncos21 - ncos12) / (ncos12 + ncos21)
     tp = 2 * ncos11 / (ncos12 + ncos21)
-    dz = 1j * params["thick"][:, None] * 2 * nbar[1:-1] * jnp.pi * cos[1:-1] / lam
+    dz = 1j * params["thick"][:, None] * 2 * jnp.pi * ncos[1:-1] / lam
     one = jnp.ones_like(rs)
     edr = jnp.exp(dz)
     nedr = jnp.exp(-dz)
 
     def TMM(r, t):
         ms = jnp.array([[nedr, nedr * r[1:]], [edr * r[1:], edr]]) / t[1:]
-        ms0 = jnp.array([[one[0], r[0]], [r[0], one[0]]]) / ts[0]
+        ms0 = jnp.array([[one[0], r[0]], [r[0], one[0]]]) / t[0]
         Ms = reduce(jnp.matmul, ms.transpose(2, 3, 0, 1), ms0.T)
         return Ms[:, 1, 0] / Ms[:, 0, 0]
 
-    Rp = TMM(rp, tp)
-    Rs = TMM(rs, ts)
-    _psi = jnp.unwrap(jnp.arctan(jnp.abs(Rp / Rs)) * (180 / jnp.pi), period=360)
-    _delta = jnp.unwrap((jnp.angle(Rs / -Rp) + jnp.pi) * (180 / jnp.pi), period=360)
+    rho = TMM(rp, tp) / TMM(rs, ts)
+    # n + ik is the conjugate of Woollam's n - ik, hence the minus sign on delta
+    _psi = jnp.degrees(jnp.arctan(jnp.abs(rho)))
+    _delta = jnp.degrees(-jnp.angle(rho)) % 360
     return _psi, _delta
