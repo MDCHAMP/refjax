@@ -1,6 +1,9 @@
+from pathlib import Path
+
 import jax
 import jax.numpy as jnp
 import numpy as np
+import pandas as pd
 import pytest
 import refjax as rj
 
@@ -64,3 +67,24 @@ def test_ellips_can_jit_and_grad():
 
     g = jax.jit(jax.grad(f))(p["thick"])
     assert np.all(np.isfinite(g))
+
+
+# %% Measured data: one spectrum of a ~47 nm polystyrene film on Si (native oxide) at 45 C, 450-1000 nm, with the
+# substrate's indices at that temperature (Franta's Si, Malitson's SiO2). The parameters are a NUTS fit's posterior means
+# (Cauchy film), whose reduced chi2 against the stated errors was 1.8179.
+
+data = pd.read_csv(Path(__file__).parent.parent / "examples" / ".example_ellips_data.csv")
+film = {"A": 1.5644500071887188, "B": 0.008718367077410243, "thick_nm": 47.30875092619224}
+oxide_nm = 1.7976495299127038
+aoi_deg = 75.0689237  # the instrument's 75.1034 plus the fitted offset
+
+
+def test_spec_ellips_vs_data():
+    lam = jnp.array(data.wavelength_nm)
+    n_film = film["A"] + film["B"] / (lam / 1000) ** 2
+    nbar = jnp.stack([jnp.ones_like(lam), n_film, jnp.array(data.n_sio2), jnp.array(data.n_si) + 1j * jnp.array(data.k_si)])
+    p = {"nbar": nbar.astype(complex), "thick": jnp.array([film["thick_nm"], oxide_nm]), "aoi_rads": jnp.radians(aoi_deg)}
+    psi, delta = rj.model.spec_ellips(p, lam)
+    r = np.concatenate([(psi - data.psi) / data.dpsi, ((delta - data.delta + 180) % 360 - 180) / data.ddelta])
+    chi2_red = np.sum(r**2) / (r.size - 3)
+    assert abs(chi2_red - 1.8179) < 1e-3  # the fit's own value
