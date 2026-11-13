@@ -116,7 +116,7 @@ params = {"nbar": nbar, "thick": jnp.array([17.0, 2.0]), "aoi_rads": np.radians(
 psi, delta = refjax.model.spec_ellips(params, lam)
 ```
 
-`examples/06_spectroscopic_ellipsometry.py` models and fits a polystyrene film on Si against a measured spectrum in `examples/.example_ellips_data.csv` (which carries the substrate's indices). `test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation and against that spectrum.
+`examples/06_spectroscopic_ellipsometry.py` models and fits a thick (~270 nm) polystyrene film on Si against a measured spectrum in `examples/.example_ellips_data.csv` (which carries the substrate's indices). `test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation and against that spectrum.
 
 ### Changes in 0.1.0
 

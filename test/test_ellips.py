@@ -69,14 +69,14 @@ def test_ellips_can_jit_and_grad():
     assert np.all(np.isfinite(g))
 
 
-# %% Measured data: one spectrum of a ~47 nm polystyrene film on Si (native oxide) at 45 C, 450-1000 nm, with the
-# substrate's indices at that temperature (Franta's Si, Malitson's SiO2). The parameters are a NUTS fit's posterior means
-# (Cauchy film), whose reduced chi2 against the stated errors was 1.8179.
+# %% Measured data: one spectrum of a ~270 nm polystyrene film on Si (native oxide) at 45 C, 450-1000 nm, with the
+# substrate's indices at that temperature (Franta's Si, Malitson's SiO2). The parameters are a fit of a Cauchy film to it,
+# whose reduced chi2 against the stated errors was 12.860.
 
 data = pd.read_csv(Path(__file__).parent.parent / "examples" / ".example_ellips_data.csv")
-film = {"A": 1.5644500071887188, "B": 0.008718367077410243, "thick_nm": 47.30875092619224}
+film = {"A": 1.5592380152192518, "B": 0.009669302459697682, "thick_nm": 269.12932822155117}
 oxide_nm = 1.7976495299127038
-aoi_deg = 75.0689237  # the instrument's 75.1034 plus the fitted offset
+aoi_deg = 75.11362116  # the instrument's 75.1034 plus the fitted offset
 
 
 def test_spec_ellips_vs_data():
@@ -87,4 +87,4 @@ def test_spec_ellips_vs_data():
     psi, delta = rj.model.spec_ellips(p, lam)
     r = np.concatenate([(psi - data.psi) / data.dpsi, ((delta - data.delta + 180) % 360 - 180) / data.ddelta])
     chi2_red = np.sum(r**2) / (r.size - 3)
-    assert abs(chi2_red - 1.8179) < 1e-3  # the fit's own value
+    assert abs(chi2_red - 12.860) < 1e-2  # the fit's own value

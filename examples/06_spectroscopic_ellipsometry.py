@@ -11,8 +11,8 @@ from refjax.model import spec_ellips
 # %%
 # This example script demonstrates how to use refjax to model spectroscopic ellipsometry data, and to fit a film to it.
 
-# The example data is one (real) spectrum of a polystyrene film on a Si wafer with a thin layer of native SiO2 between them,
-# measured at 45 C between 450 and 1000 nm.
+# The example data is one (real) spectrum of a thick (~270 nm) polystyrene film on a Si wafer with a thin layer of native SiO2
+# between them, measured at 45 C between 450 and 1000 nm. The thick film puts several interference fringes in the spectrum.
 
 data = pd.read_csv(".example_ellips_data.csv")
 print(data)
@@ -44,7 +44,7 @@ plt.show()
 #
 # ------------------
 #
-#    Polymer film:     thick = ~50 nm   *
+#    Polymer film:     thick = ~250 nm  *
 #                      n = A + B / lambda^2 (Cauchy, lambda in um), A = ~1.55 *, B = ~0.01 *
 #
 # ------------------
@@ -56,13 +56,13 @@ plt.show()
 #
 #    Backing (Si):     n + ik from the data (n_si, k_si)
 
-# Parameters marked with * are only known approximately. The angle of incidence is the instrument's, 75.07 degrees.
+# Parameters marked with * are only known approximately. The angle of incidence is the instrument's, 75.11 degrees.
 
 lam = jnp.array(data.wavelength_nm)
 nbar_sio2 = jnp.array(data.n_sio2, dtype=complex)
 nbar_si = jnp.array(data.n_si) + 1j * jnp.array(data.k_si)
 oxide_nm = 1.7976
-aoi_rads = jnp.radians(75.0689)
+aoi_rads = jnp.radians(75.1136)
 
 
 def predict(x):
@@ -83,7 +83,7 @@ def residuals(x):
     return jnp.concatenate([r_psi, r_delta])
 
 
-x0 = jnp.array([50.0, 1.55, 0.01])
+x0 = jnp.array([250.0, 1.55, 0.01])
 print(f"Starting guess: reduced chi2 = {jnp.sum(residuals(x0) ** 2) / (2 * lam.shape[0] - 3):.1f}")
 
 # %%
@@ -104,8 +104,8 @@ for name, v, s in zip(("thickness (nm)", "A", "B (um^2)"), x, sd):
     print(f"{name:15s} {v:.5f} +- {s:.5f}")
 print(f"reduced chi2 = {chi2_red:.3f}")
 
-# The fit gives a film of about 47.3 nm with A = 1.564 and B = 0.0087, and a reduced chi2 of about 1.8: the model matches the data
-# to within its stated uncertainties.
+# The fit gives a film of about 269.1 nm with A = 1.559 and B = 0.0097, and a reduced chi2 of about 12.9. The model follows every
+# fringe, but a single uniform Cauchy layer doesn't describe a film this thick to within the instrument's small stated errors.
 
 psi, delta = predict(x)
 fig, axs = plt.subplots(1, 2, figsize=(10, 4))
