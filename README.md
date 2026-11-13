@@ -28,7 +28,7 @@ refjax needs Python >= 3.11, `jax` and `jaxlib` >= 0.4.26 and `numpy` >= 2.0. Th
 
 ### 64-bit precision is on by default
 
-`import refjax` switches on jax's 64-bit mode (`jax.config.update("jax_enable_x64", True)`), so refjax computes in float64 and complex128. This setting is global: it applies to all jax code in the same Python process, not only to refjax.
+`import refjax` switches on jax's 64-bit mode (`jax.config.update("jax_enable_x64", True)`), so refjax computes in float64 and complex128. This setting is global: it applies to all jax code in the same Python process, not only to refjax. To work in 32-bit, switch it off after importing refjax, before creating any arrays: `jax.config.update("jax_enable_x64", False)`. refjax then computes in float32 and complex64; its tests run only in 64-bit.
 
 ## Neutron reflectometry
 
@@ -100,7 +100,7 @@ For `n` layers between an ambient medium and a substrate, `params` is a dict:
 It returns `(psi, delta)` in degrees, each of shape `lam.shape`.
 
 Conventions:
-- `tan(psi) exp(i delta) = rp / rs` in Woollam's convention, with `delta` wrapped to `[0, 360)`. Compare `delta` to data modulo 360.
+- `tan(psi) exp(i delta) = rp / rs` in Woollam's convention, as used by J.A. Woollam's instruments and CompleteEASE and set out in H. Fujiwara, *Spectroscopic Ellipsometry: Principles and Applications* (Wiley, 2007), [doi:10.1002/9780470060193](https://doi.org/10.1002/9780470060193): the complex index written n - ik, so refjax's n + ik enters conjugated. `delta` is wrapped to `[0, 360)`; compare it to data modulo 360.
 - The complex index is `n + ik` with `k >= 0`. This is the complex conjugate of Woollam's `n - ik`, hence the minus sign on the phase of `rp / rs` in the code. A Woollam-convention index `N = n - ik` is passed as `N.conj()`.
 - `n cos(theta)` in each medium follows from Snell's law with the principal square root, which gives `Im >= 0`: the decaying wave for `n + ik`.
 
@@ -116,7 +116,7 @@ params = {"nbar": nbar, "thick": jnp.array([17.0, 2.0]), "aoi_rads": np.radians(
 psi, delta = refjax.model.spec_ellips(params, lam)
 ```
 
-`examples/06_spectroscopic_ellipsometry.py` models and fits a thick (~270 nm) polystyrene film on Si against a measured spectrum in `examples/.example_ellips_data.csv` (which carries the substrate's indices). `test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation and against that spectrum.
+`examples/06_spectroscopic_ellipsometry.py` models and fits a thick polymer film on Si against a measured spectrum in `examples/.example_ellips_data.csv` (which carries the substrate's indices). `test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation and against that spectrum.
 
 ### Changes in 0.1.0
 

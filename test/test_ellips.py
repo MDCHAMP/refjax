@@ -69,8 +69,8 @@ def test_ellips_can_jit_and_grad():
     assert np.all(np.isfinite(g))
 
 
-# %% Measured data: one spectrum of a ~270 nm polystyrene film on Si (native oxide) at 45 C, 450-1000 nm, with the
-# substrate's indices at that temperature (Franta's Si, Malitson's SiO2). The parameters are a fit of a Cauchy film to it,
+# %% Measured data: one spectrum of a thick polymer film on Si (native oxide), 450-1000 nm, with the substrate's indices
+# at the measurement temperature (Franta's Si, Malitson's SiO2). The parameters are a fit of a Cauchy film to it,
 # whose reduced chi2 against the stated errors was 12.860.
 
 data = pd.read_csv(Path(__file__).parent.parent / "examples" / ".example_ellips_data.csv")

@@ -11,8 +11,8 @@ from refjax.model import spec_ellips
 # %%
 # This example script demonstrates how to use refjax to model spectroscopic ellipsometry data, and to fit a film to it.
 
-# The example data is one (real) spectrum of a thick (~270 nm) polystyrene film on a Si wafer with a thin layer of native SiO2
-# between them, measured at 45 C between 450 and 1000 nm. The thick film puts several interference fringes in the spectrum.
+# The example data is one (real) spectrum of a thick polymer film on a Si wafer with a thin layer of native SiO2 between them,
+# measured between 450 and 1000 nm. The thick film puts several interference fringes in the spectrum.
 
 data = pd.read_csv(".example_ellips_data.csv")
 print(data)
@@ -22,7 +22,7 @@ print(data)
 # wavelength_nm  (the wavelength, nm)
 # psi, delta     (the ellipsometric angles, degrees)
 # dpsi, ddelta   (their stated uncertainties, degrees)
-# n_si, k_si     (the Si substrate's complex refractive index n + ik at 45 C)
+# n_si, k_si     (the Si substrate's complex refractive index n + ik at the measurement temperature)
 # n_sio2         (the native oxide's refractive index)
 
 # The substrate's indices are given with the data, so the only unknowns here are the film's.
