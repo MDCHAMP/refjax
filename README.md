@@ -4,7 +4,6 @@ This package provides lightweight, low-level access to neutron reflectometry and
 
 The provided kernels are all `jit` and `grad` compatible and easy to integrate with your favourite optimisation or uncertainty quantification library for fast parameterisation of stratified reflectometry models. Several examples for popular libraries are available in the [`examples`](https://github.com/MDCHAMP/refjax/tree/main/examples) folder.
 
-Current version: 0.1.0.
 
 ## Installation
 
@@ -16,12 +15,12 @@ pip install refjax
 uv add refjax
 ```
 
-Or from GitHub, pinned to the 0.1.0 release by its tag:
+Or from GitHub, pinned to the 0.1.1 release by its tag:
 
 ```bash
-pip install "refjax @ git+https://github.com/MDCHAMP/refjax@v0.1.0"
+pip install "refjax @ git+https://github.com/MDCHAMP/refjax@v0.1.1"
 # or
-uv add git+https://github.com/MDCHAMP/refjax --tag v0.1.0
+uv add git+https://github.com/MDCHAMP/refjax --tag v0.1.1
 ```
 
 refjax needs Python >= 3.11, `jax` and `jaxlib` >= 0.4.26 and `numpy` >= 2.0. The test suite runs in CI at these minimum versions and at the latest releases.
@@ -120,6 +119,10 @@ psi, delta = refjax.model.spec_ellips(params, lam)
 
 [`examples/06_spectroscopic_ellipsometry.py`](https://github.com/MDCHAMP/refjax/blob/main/examples/06_spectroscopic_ellipsometry.py) models and fits a thick polymer film on Si against a measured spectrum in [`examples/.example_ellips_data.csv`](https://github.com/MDCHAMP/refjax/blob/main/examples/.example_ellips_data.csv) (which carries the substrate's indices). [`test/test_ellips.py`](https://github.com/MDCHAMP/refjax/blob/main/test/test_ellips.py) checks `spec_ellips` against an independent numpy implementation and against that spectrum.
 
+### Changes in 0.1.1
+
+The first release on PyPI. Over the 0.1.0 tag: the smearing quadrature is computed in float64 (it was float32, an error of about 2e-8 relative in smeared reflectivity), importing refjax no longer starts jax's backend, `abeles` and `spec_ellips` have docstrings, and the packaging metadata is updated.
+
 ### Changes in 0.1.0
 
 `spec_ellips` now follows the conventions above. `delta` is wrapped to `[0, 360)`; before 0.1.0 it was unwrapped along the wavelength axis, so it could differ from the 0.1.0 value by multiples of 360. `n cos(theta)` now comes from the principal square root rather than `arcsin` of Snell's law. Code written against the earlier `spec_ellips` should compare `delta` modulo 360.
@@ -147,6 +150,6 @@ If you use refjax in published work, please cite:
 }
 ```
 
-Please also state the refjax version you used (e.g. 0.1.0). Citation metadata is in [`CITATION.cff`](https://github.com/MDCHAMP/refjax/blob/main/CITATION.cff); GitHub's "Cite this repository" button reads it.
+Please also state the refjax version you used (e.g. 0.1.1). Citation metadata is in [`CITATION.cff`](https://github.com/MDCHAMP/refjax/blob/main/CITATION.cff); GitHub's "Cite this repository" button reads it.
 
 Having trouble? Feature request? Raise an issue on the [GitHub issues page](https://github.com/MDCHAMP/refjax/issues).
