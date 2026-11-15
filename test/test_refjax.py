@@ -62,3 +62,9 @@ def test_can_grad():
     dk_dtheta = jax.jacfwd(kernel)
     dk_dtheta(params, jnp.array(data.Q), jnp.array(data.FWHM))
 
+
+def test_quadrature_nodes_float64():
+    # made at import, before refjax switches on x64: they must not be float32 jax arrays
+    assert rj.smear.herm_root.dtype == np.float64
+    assert rj.smear.herm_weight.dtype == np.float64
+

@@ -2,7 +2,7 @@
 
 This package provides lightweight, low-level access to neutron reflectometry and spectroscopic ellipsometry kernels in jax.
 
-The provided kernels are all `jit` and `grad` compatible and easy to integrate with your favourite optimisation or uncertainty quantification library for fast parameterisation of stratified reflectometry models. Several examples for popular libraries are available in the `examples` folder.
+The provided kernels are all `jit` and `grad` compatible and easy to integrate with your favourite optimisation or uncertainty quantification library for fast parameterisation of stratified reflectometry models. Several examples for popular libraries are available in the [`examples`](https://github.com/MDCHAMP/refjax/tree/main/examples) folder.
 
 Current version: 0.1.0.
 
@@ -79,11 +79,13 @@ params = {
     "scale": 1.0,
     "bkg": 2e-7,
 }
+Q = jnp.linspace(0.005, 0.3, 200)  # Å⁻¹
+FWHM = 0.05 * Q  # resolution FWHM at each Q
 kernel = refjax.kernel(refjax.model.abeles, refjax.smear.pointwise_gaussian)
 R = kernel(params, Q, FWHM)
 ```
 
-`examples/01_basic_usage.py` walks through this model against the example data in `examples/.example_NR_data.csv`; the other scripts in `examples` show parameter identification with optax and numpyro.
+[`examples/01_basic_usage.py`](https://github.com/MDCHAMP/refjax/blob/main/examples/01_basic_usage.py) walks through this model against the example data in [`examples/.example_NR_data.csv`](https://github.com/MDCHAMP/refjax/blob/main/examples/.example_NR_data.csv); the other scripts in [`examples`](https://github.com/MDCHAMP/refjax/tree/main/examples) show parameter identification with optax and numpyro.
 
 ## Spectroscopic ellipsometry
 
@@ -116,7 +118,7 @@ params = {"nbar": nbar, "thick": jnp.array([17.0, 2.0]), "aoi_rads": np.radians(
 psi, delta = refjax.model.spec_ellips(params, lam)
 ```
 
-`examples/06_spectroscopic_ellipsometry.py` models and fits a thick polymer film on Si against a measured spectrum in `examples/.example_ellips_data.csv` (which carries the substrate's indices). `test/test_ellips.py` checks `spec_ellips` against an independent numpy implementation and against that spectrum.
+[`examples/06_spectroscopic_ellipsometry.py`](https://github.com/MDCHAMP/refjax/blob/main/examples/06_spectroscopic_ellipsometry.py) models and fits a thick polymer film on Si against a measured spectrum in [`examples/.example_ellips_data.csv`](https://github.com/MDCHAMP/refjax/blob/main/examples/.example_ellips_data.csv) (which carries the substrate's indices). [`test/test_ellips.py`](https://github.com/MDCHAMP/refjax/blob/main/test/test_ellips.py) checks `spec_ellips` against an independent numpy implementation and against that spectrum.
 
 ### Changes in 0.1.0
 
@@ -145,6 +147,6 @@ If you use refjax in published work, please cite:
 }
 ```
 
-Please also state the refjax version you used (e.g. 0.1.0). Citation metadata is in [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository" button reads it.
+Please also state the refjax version you used (e.g. 0.1.0). Citation metadata is in [`CITATION.cff`](https://github.com/MDCHAMP/refjax/blob/main/CITATION.cff); GitHub's "Cite this repository" button reads it.
 
-Having trouble? Feature request? Raise an issue on the GitHub page.
+Having trouble? Feature request? Raise an issue on the [GitHub issues page](https://github.com/MDCHAMP/refjax/issues).
