@@ -3,17 +3,28 @@ from functools import reduce
 
 # %% Abeles Matrix formalism
 
-# Paramter shapes
-# params = {
-#     "thick": (n,) layers
-#     "rough": (n + 1) surfaces
-#     "SLD":  (n + 2) media
-#     "scale": (),
-#     "bkg": (),
-# }
-
 
 def abeles(params, Q):
+    """Reflectivity of a stratified medium by the Abeles matrix formalism.
+
+    Parameters
+    ----------
+    params : dict
+        Slab model with n layers between a fronting and a backing medium:
+
+        - "thick": (n,) layer thicknesses, in the length unit of 1/Q (Å for Q in Å⁻¹)
+        - "rough": (n + 1,) interfacial roughnesses, one per interface
+        - "SLD": (n + 2,) scattering length densities in 10⁻⁶ Å⁻², fronting first, backing last
+        - "scale": () multiplies the reflectivity
+        - "bkg": () constant background added to the reflectivity
+    Q : array, shape (m,)
+        Momentum transfer.
+
+    Returns
+    -------
+    array, shape (m,)
+        The reflectivity at each Q.
+    """
     # SLD profile differences
     d_rho = (params["SLD"] - params["SLD"][0]).astype(complex) * 1e-6
     # compute wavevectors for the nth layer
@@ -49,17 +60,28 @@ def abeles(params, Q):
 
 # %% Spectroscopic ellipsometry
 
-# Parameter shapes
-# params = {
-#     "nbar": (n + 2, lam.shape) complex refractive index n + ik (k >= 0), ambient first
-#     "thick": (n,) layers, same length unit as lam
-#     "aoi_rads": () angle of incidence in the ambient
-# }
-# Returns psi, delta in degrees: tan(psi) exp(i delta) = rp / rs in Woollam's convention,
-# delta in [0, 360). Compare delta to data modulo 360.
-
 
 def spec_ellips(params, lam):
+    """Ellipsometric angles Psi and Delta of a stratified medium by the transfer-matrix method.
+
+    Parameters
+    ----------
+    params : dict
+        n layers between an ambient medium and a substrate:
+
+        - "nbar": (n + 2, lam.shape) complex refractive index n + ik (k >= 0) of each medium,
+          ambient first, substrate last
+        - "thick": (n,) layer thicknesses, in the same length unit as lam
+        - "aoi_rads": () angle of incidence in the ambient, in radians
+    lam : array
+        Wavelengths.
+
+    Returns
+    -------
+    psi, delta : arrays, each of shape lam.shape
+        In degrees: tan(psi) exp(i delta) = rp / rs in Woollam's convention, delta in [0, 360).
+        Compare delta to data modulo 360.
+    """
     nbar = params["nbar"]
     # n cos(theta) in each medium (Snell); principal sqrt gives Im >= 0, the decaying wave for n + ik
     ncos = jnp.sqrt(nbar**2 - (nbar[0] * jnp.sin(params["aoi_rads"])) ** 2)

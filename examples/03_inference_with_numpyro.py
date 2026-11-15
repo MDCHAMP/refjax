@@ -22,7 +22,7 @@ plt.loglog(data.Q, data.R)
 plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha=0.2)
 plt.xlabel("$Q$ ($A^{-1}$)")
 plt.ylabel("Reflectivity")
-plt.legend(["Data", "$\pm 3 \sigma$"])
+plt.legend(["Data", r"$\pm 3 \sigma$"])
 plt.show()
 
 # Slab model parameters
@@ -31,12 +31,12 @@ plt.show()
 #
 # ------------------   rough=~5.2   *
 #
-#     Polymer film:    thick=~255nm *
+#     Polymer film:    thick=~255 Å *
 #                      SLD=~6.4     *
 #
 # ------------------   rough=5.0
 #
-#        Si02:         thick=17nm
+#        Si02:         thick=17 Å
 #                      SLD=3.47
 #
 # ------------------   rough=2.07
@@ -120,7 +120,7 @@ plt.fill_between(
     alpha=0.2,
     color="C3",
 )
-plt.legend(["Data", "$\pm 3 \sigma$", "Mean prediction", "$\pm 3 \sigma$"])
+plt.legend(["Data", r"$\pm 3 \sigma$", "Mean prediction", r"$\pm 3 \sigma$"])
 plt.show()
 
 # We now have access to distributional estimates of each of the parameters in our inference

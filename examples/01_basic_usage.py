@@ -26,7 +26,7 @@ plt.loglog(data.Q, data.R)
 plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha=0.2)
 plt.xlabel("$Q$ ($A^{-1}$)")
 plt.ylabel("Reflectivity")
-plt.legend(["Data", "$\pm 3 \sigma$"])
+plt.legend(["Data", r"$\pm 3 \sigma$"])
 plt.show()
 
 
@@ -61,7 +61,7 @@ plt.show()
 
 # We can collect these parameters into a dictionary for use in refjax. Note that for n (here n=2) layers in the above slab model the dimensions of the parameter arrays are:
 
-# thick (n,)   media with thickness i.e n layers (nm)
+# thick (n,)   media with thickness i.e n layers (Å)
 # SLD   (n+2,) media through which the neutrons travel i.e n layers + fronting + backing
 # rough (n+1,) interfaces between media i.e n+1
 # scale ()     scaling of the reflectivity
@@ -99,7 +99,7 @@ plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha
 plt.plot(data.Q, R_hat)
 plt.xlabel("$Q$ ($A^{-1}$)")
 plt.ylabel("Reflectivity")
-plt.legend(["Data", "$\pm 3 \sigma$", "Model (no smearing)"])
+plt.legend(["Data", r"$\pm 3 \sigma$", "Model (no smearing)"])
 plt.show()
 
 # However, note that there are significant deviations between the model and the data, particluarly at the bottom of the fringes. This is happening because we have not taken into account the smearing in the detector.
@@ -121,7 +121,7 @@ plt.fill_between(data.Q, data.R - 3 * data.sig_R, data.R + 3 * data.sig_R, alpha
 plt.plot(data.Q, R_hat)
 plt.xlabel("$Q$ ($A^{-1}$)")
 plt.ylabel("Reflectivity")
-plt.legend(["Data", "$\pm 3 \sigma$", "Model (Gaussian smearing)"])
+plt.legend(["Data", r"$\pm 3 \sigma$", "Model (Gaussian smearing)"])
 plt.show()
 
 # Note that there are still some slight differences between our model and the data. This is because the parameters are not known exactly. In the following example scripts we will infer the parameters by making use of the gradient of the error w.r.t to the paramters for efficient learning.

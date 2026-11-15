@@ -34,14 +34,14 @@ def refplot(Q, R, sig_R, R_hat=None, sig_Rhat=None, fig=True, c="C1"):
     plt.yscale("log")
     plt.xlabel("$Q$ ($A^{-1}$)")
     plt.ylabel("$R$")
-    rh = "$\hat{R}: "
+    rh = r"$\hat{R}: "
     if sig_Rhat is not None:
-        rh = "$E[\hat{R}]: "
+        rh = r"$E[\hat{R}]: "
     labs = [
         "$R$",
-        "$\pm 3 \sigma$",
-        rh + f"\chi^2$:{x2pp:.3g}",
-        "$\pm 3 \sigma$",
+        r"$\pm 3 \sigma$",
+        rh + rf"\chi^2$:{x2pp:.3g}",
+        r"$\pm 3 \sigma$",
     ]
 
     if fig:
